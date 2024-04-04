@@ -6,6 +6,8 @@ defmodule SampleEx.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias SampleEx.Users.Salary
+
   @type t() :: %__MODULE__{
           id: integer(),
           name: String.t(),
@@ -15,6 +17,7 @@ defmodule SampleEx.Users.User do
   schema "users" do
     field :name, :string
     field :email, :string
+    has_many :salaries, Salary
 
     timestamps()
   end
