@@ -23,4 +23,18 @@ defmodule SampleEx.Users.Repositories.SalaryRepo do
     |> where(active: true)
     |> Repo.all()
   end
+
+  @doc """
+    Build a subquery to fetch the latest salaries for each user.
+    recommendations:
+    - Use this subquery to fetch the latest salaries for each user.
+  """
+
+  @spec fetch_latest_salaries_subquery() :: Ecto.Query.t()
+  def fetch_latest_salaries_subquery do
+    from(s in Salary,
+      order_by: [desc: s.active, desc: s.inserted_at],
+      distinct: s.user_id
+    )
+  end
 end
