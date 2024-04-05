@@ -24,6 +24,8 @@ defmodule SampleEx.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import SampleEx.DataCase
+
+      use Oban.Testing, repo: SampleEx.Repo
     end
   end
 

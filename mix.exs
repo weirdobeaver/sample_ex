@@ -59,7 +59,8 @@ defmodule SampleEx.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:open_api_spex, "~> 3.18"},
-      {:ymlr, "~> 2.0"}
+      {:ymlr, "~> 2.0"},
+      {:oban, "~> 2.17"}
     ]
   end
 

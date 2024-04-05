@@ -31,6 +31,12 @@ config :sample_ex, SampleExWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :sample_ex, SampleEx.Mailer, adapter: Swoosh.Adapters.Local
 
+# Configures Oban
+config :sample_ex, Oban,
+  repo: SampleEx.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10, mailers: 10]
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

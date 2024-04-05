@@ -17,7 +17,9 @@ defmodule SampleEx.Application do
       # Start a worker by calling: SampleEx.Worker.start_link(arg)
       # {SampleEx.Worker, arg},
       # Start to serve requests, typically the last entry
-      SampleExWeb.Endpoint
+      SampleExWeb.Endpoint,
+      # Start Oban background service
+      {Oban, Application.fetch_env!(:sample_ex, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

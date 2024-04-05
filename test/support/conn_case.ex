@@ -23,6 +23,7 @@ defmodule SampleExWeb.ConnCase do
       @endpoint SampleExWeb.Endpoint
 
       use SampleExWeb, :verified_routes
+      use Oban.Testing, repo: SampleEx.Repo
 
       # Import conveniences for testing with connections
       import Plug.Conn
