@@ -12,12 +12,19 @@ defmodule SampleExWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug OpenApiSpex.Plug.PutApiSpec, module: SampleExWeb.ApiSpec
   end
 
   scope "/", SampleExWeb do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/api/v1", SampleExWeb do
+    pipe_through :api
+
+    get "/users", Api.V1.UsersController, :index
   end
 
   # Other scopes may use custom stacks.

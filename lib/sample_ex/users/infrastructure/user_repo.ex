@@ -46,6 +46,8 @@ defmodule SampleEx.Users.Repositories.UserRepo do
     query |> where([u], ilike(u.name, ^"%#{name}%"))
   end
 
+  defp apply_filter({:email, nil}, query), do: query
+
   defp apply_filter({:email, email}, query) do
     query |> where([u], u.email == ^email)
   end

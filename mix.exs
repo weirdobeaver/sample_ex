@@ -57,7 +57,9 @@ defmodule SampleEx.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:open_api_spex, "~> 3.18"},
+      {:ymlr, "~> 2.0"}
     ]
   end
 
@@ -79,6 +81,10 @@ defmodule SampleEx.MixProject do
         "tailwind sample_ex --minify",
         "esbuild sample_ex --minify",
         "phx.digest"
+      ],
+      api_docs: [
+        "openapi.spec.json --spec SampleExWeb.ApiSpec doc/api/openapi.json",
+        "openapi.spec.yaml --spec SampleExWeb.ApiSpec doc/api/openapi.yaml"
       ]
     ]
   end
