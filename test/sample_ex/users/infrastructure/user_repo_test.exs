@@ -96,4 +96,32 @@ defmodule SampleEx.Users.Repositories.UserRepoTest do
       assert List.first(users) == %{salary: new_salary, user: user}
     end
   end
+
+  describe "list users with active salary" do
+    setup do
+      {:ok, user} = UserRepo.store(%User{}, %{name: "Jon", email: "jon@snow.com"})
+      {:ok, user_2} = UserRepo.store(%User{}, %{name: "Adam", email: "adam@example.com"})
+      SalaryRepo.store(%Salary{}, %{amount: 10, active: true, currency: :USD, user_id: user.id})
+      SalaryRepo.store(%Salary{}, %{amount: 5, active: false, currency: :USD, user_id: user_2.id})
+      {:ok, user: user}
+    end
+
+    test "lists only users with active salary", %{user: user} do
+      users = UserRepo.list_users_with_active_salary()
+
+      assert length(users) == 1
+      assert List.first(users).name == user.name
+      assert List.first(users).id == user.id
+      assert List.first(users).email == user.email
+    end
+
+    test "does not list users without salary" do
+      {:ok, user} = UserRepo.store(%User{}, %{name: "no_salary", email: "no@salary.com"})
+      users = UserRepo.list_users_with_active_salary()
+
+      assert length(users) == 1
+      refute List.first(users).name == user.name
+      refute List.first(users).id == user.id
+    end
+  end
 end

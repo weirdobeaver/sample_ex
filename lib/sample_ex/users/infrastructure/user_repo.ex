@@ -25,6 +25,18 @@ defmodule SampleEx.Users.Repositories.UserRepo do
     |> Repo.insert()
   end
 
+  @spec list_users_with_active_salary() :: [
+          %{id: pos_integer(), name: String.t(), email: String.t()}
+        ]
+  def list_users_with_active_salary() do
+    from(u in User,
+      left_join: s in assoc(u, :salaries),
+      where: s.active == true,
+      select: [:id, :name, :email]
+    )
+    |> Repo.all()
+  end
+
   @spec list_users_with_last_active_salary(UserFilters.t()) :: [user_with_salary()]
   def list_users_with_last_active_salary(filters) do
     base_query =
