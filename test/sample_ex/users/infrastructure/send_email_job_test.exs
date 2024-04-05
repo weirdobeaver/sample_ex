@@ -13,7 +13,7 @@ defmodule SampleEx.Users.Workers.SendEmailJobTest do
 
     test "sends email with correct params" do
       perform_job(SendEmailJob, %{name: "Jon", email: "jon@snow.com"})
-      assert_email_sent UserEmail.invite(%{name: "Jon", email: "jon@snow.com"})
+      assert_email_sent(UserEmail.invite(%{name: "Jon", email: "jon@snow.com"}))
     end
   end
 end

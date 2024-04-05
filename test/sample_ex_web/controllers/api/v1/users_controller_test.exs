@@ -8,6 +8,7 @@ defmodule SampleExWeb.Api.V1.UsersControllerTest do
   alias SampleEx.Users.Repositories.SalaryRepo
   alias SampleEx.Users.User
   alias SampleEx.Users.Salary
+  alias SampleEx.Users.Workers.SendMultipleEmailsJob
 
   setup %{conn: conn} do
     conn =
@@ -151,6 +152,28 @@ defmodule SampleExWeb.Api.V1.UsersControllerTest do
 
       error = content["errors"] |> hd()
       assert error["detail"] == "Unexpected field: wrong"
+    end
+  end
+
+  describe "invite_users" do
+    test "returns succesful ok response", %{conn: conn} do
+      content =
+        conn
+        |> post("/api/v1/invite-users")
+        |> json_response(200)
+
+      api_spec = SampleExWeb.ApiSpec.spec()
+      assert_schema(content, "InviteUsersResponse", api_spec)
+      assert content == %{"code" => "ok"}
+    end
+
+    test "enques send email job in oban", %{conn: conn} do
+      conn
+      |> post("/api/v1/invite-users")
+      |> json_response(200)
+
+      assert jobs = all_enqueued(worker: SendMultipleEmailsJob)
+      assert 1 == length(jobs)
     end
   end
 end

@@ -4,8 +4,10 @@ defmodule SampleExWeb.Api.V1.UsersController do
 
   alias SampleExWeb.OpenApi.Schemas.User.Users
   alias SampleExWeb.OpenApi.Schemas.Errors.BadRequest
+  alias SampleExWeb.OpenApi.Schemas.User.InviteUsersResponse
   alias SampleExWeb.Api.V1.Users.UsersJson
   alias SampleEx.Users.Services.ListUsersWithActiveSalary
+  alias SampleEx.Users.Services.SendEmailToActiveSalaryUsers
 
   tags(["users"])
 
@@ -41,5 +43,18 @@ defmodule SampleExWeb.Api.V1.UsersController do
 
     users = ListUsersWithActiveSalary.list_users_with_last_active_salary(filters)
     json(conn, UsersJson.response(users))
+  end
+
+  operation(:invite_users,
+    operation_id: "InviteUsers",
+    summary: "Sends email to users with active salaries",
+    responses: [
+      ok: {"Emails sent", "application/json", InviteUsersResponse}
+    ]
+  )
+
+  def invite_users(conn, _) do
+    SendEmailToActiveSalaryUsers.send_email_to_active_salary_users()
+    json(conn, %{code: :ok})
   end
 end

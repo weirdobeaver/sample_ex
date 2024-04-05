@@ -25,6 +25,8 @@ defmodule SampleExWeb.Router do
     pipe_through :api
 
     get "/users", Api.V1.UsersController, :index
+
+    post "/invite-users", Api.V1.UsersController, :invite_users
   end
 
   # Other scopes may use custom stacks.
